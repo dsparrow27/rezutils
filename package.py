@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 name = "rezutils"
 version = "1.0.0"
-requires = [
-    "python-2.7",
+authors = ["David Sparrow"]
+variants = [
+    ["platform-windows", "python-2.7"]
 ]
-
-_category = "int"
 
 
 def commands():

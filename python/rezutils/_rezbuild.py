@@ -27,7 +27,8 @@ IGNORE = [
     "*.sln",
     ".vs",
     ".bez*",
-    "build.rxt"
+    "build.rxt",
+    ".gitignore"
 ]
 
 
@@ -40,8 +41,11 @@ def copyBuild(source_path, destination_path, symlink=False):
         if not os.path.exists(src):
             continue
         if os.path.exists(dest):
-            logger.debug("Removing directory: {}".format(dest))
-            shutil.rmtree(dest)
+            logger.debug("Removing path: {}".format(dest))
+            if os.path.isdir(dest):
+                shutil.rmtree(dest)
+            else:
+                os.remove(dest)
         logger.debug("Copying path: {} -> {}".format(src, dest))
         if os.path.isdir(src):
             if symlink:
@@ -62,7 +66,7 @@ def build(source_path, build_path, install_path, targets, symlink=False):
         copyBuild(source_path, build_path, symlink)
 
     def _install():
-        copyBuild(build_path, install_path, symlink)
+        copyBuild(source_path, install_path, symlink)
 
     _build()
 
