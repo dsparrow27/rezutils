@@ -5,8 +5,12 @@ authors = ["David Sparrow"]
 variants = [
     ["platform-windows", "python-2.7"]
 ]
-
+tools = [
+    "rez-package-install"
+]
+build_command = "{root}/bin/rez-package-install --command build --source_path {root}"
 
 def commands():
     global env
-    env["PYTHONPATH"].prepend("{root}/python")
+    env.PYTHONPATH.append("{root}/python")
+    env.PATH.append("{root}/bin")

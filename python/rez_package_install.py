@@ -53,12 +53,6 @@ def copyBuild(source_path, destination_path, symlink=False):
                                                                    os.path.normpath(src)), shell=True)
             else:
                 shutil.copytree(src, dest)
-        else:
-            if symlink:
-                subprocess.check_call('mklink "{}" "{}"'.format(dest,
-                                                                os.path.normpath(src)), shell=True)
-            else:
-                shutil.copyfile(src, dest)
 
 
 def build(source_path, build_path, install_path, targets, symlink=False):
@@ -74,12 +68,12 @@ def build(source_path, build_path, install_path, targets, symlink=False):
         _install()
 
 
-def main(argv):
+def main():
     import argparse
 
     parser = argparse.ArgumentParser("rezbuild")
-
-    parser.add_argument("source_path", type=lambda s: unicode(s, 'utf8'))
+    parser.add_argument("--command")
+    parser.add_argument("--source_path", type=lambda s: unicode(s, 'utf8'))
     parser.add_argument("--build_path",
                         type=lambda s: unicode(s, 'utf8'),
                         default=os.getenv("REZ_BUILD_PATH"))
@@ -91,7 +85,7 @@ def main(argv):
     parser.add_argument("--symlink",
                         action="store_true")
 
-    opts = parser.parse_args(argv)
+    opts = parser.parse_args()
 
     targets = ["install"] if opts.install else []
     logger.debug(str(opts))
@@ -103,4 +97,4 @@ def main(argv):
 
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()
