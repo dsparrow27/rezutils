@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 name = "rezutils"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["David Sparrow"]
 variants = [
     ["platform-windows", "python-2.7"]
