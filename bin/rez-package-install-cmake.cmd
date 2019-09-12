@@ -1,0 +1,1 @@
+python %~dp0\..\python\rez_package_install_cmake.py %*

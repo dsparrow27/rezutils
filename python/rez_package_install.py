@@ -7,7 +7,7 @@ import fnmatch
 import os
 import os.path
 import shutil
-
+import platform
 logging.basicConfig(format="%(module)s - [%(levelname)s] - %(msg)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -31,6 +31,21 @@ IGNORE = [
     ".gitignore"
 ]
 
+def makelink(src, dest):
+    if platform.platform().lower().startswith("windows"):
+        subprocess.check_call('mklink /D "{}" "{}"'.format(dest, os.path.normpath(src)), shell=True)
+        return True
+    os.symlink(src, dest)
+    return True
+
+
+def deleteLink(directory):
+    if platform.platform().lower().startswith("windows"):
+        subprocess.check_call("rd {} /s /q /f".format(directory))
+        return True
+    os.unlink(directory)
+    return True
+
 
 def copyBuild(source_path, destination_path, symlink=False):
     for name in os.listdir(source_path):
@@ -43,14 +58,18 @@ def copyBuild(source_path, destination_path, symlink=False):
         if os.path.exists(dest):
             logger.debug("Removing path: {}".format(dest))
             if os.path.isdir(dest):
-                shutil.rmtree(dest)
+                if os.path.islink(dest):
+                    deleteLink(dest)
+                else:
+                    os.rmdir(dest)
+            elif os.path.islink(dest):
+                deleteLink(dest)
             else:
                 os.remove(dest)
         logger.debug("Copying path: {} -> {}".format(src, dest))
         if os.path.isdir(src):
             if symlink:
-                subprocess.check_call('mklink /J "{}" "{}"'.format(dest,
-                                                                   os.path.normpath(src)), shell=True)
+                makelink(os.path.normpath(src), dest)
             else:
                 shutil.copytree(src, dest)
 
@@ -63,7 +82,7 @@ def build(source_path, build_path, install_path, targets, symlink=False):
         copyBuild(source_path, install_path, symlink)
 
     _build()
-
+    print(targets)
     if "install" in (targets or []):
         _install()
 
@@ -80,8 +99,8 @@ def main():
     parser.add_argument("--install_path",
                         type=lambda s: unicode(s, 'utf8'),
                         default=os.getenv("REZ_BUILD_INSTALL_PATH"))
-    parser.add_argument("--install", type=bool,
-                        default=bool(os.getenv("REZ_BUILD_INSTALL")))
+    parser.add_argument("--install", "-i", type=bool,
+                        default=False)
     parser.add_argument("--symlink",
                         action="store_true")
 

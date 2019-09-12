@@ -5,8 +5,14 @@ authors = ["David Sparrow"]
 variants = [
     ["platform-windows", "python-2.7"]
 ]
+requires = [
+    "python",
+    "cmake",
+    "rez"
+]
 tools = [
-    "rez-package-install"
+    "rez-package-install",
+    "rez-package-install-cmake"
 ]
 build_command = "{root}/bin/rez-package-install --command build --source_path {root}"
 
