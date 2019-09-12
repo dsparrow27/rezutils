@@ -61,7 +61,7 @@ def copyBuild(source_path, destination_path, symlink=False):
                 if os.path.islink(dest):
                     deleteLink(dest)
                 else:
-                    os.rmdir(dest)
+                    shutil.rmtree(dest)
             elif os.path.islink(dest):
                 deleteLink(dest)
             else:
@@ -99,8 +99,8 @@ def main():
     parser.add_argument("--install_path",
                         type=lambda s: unicode(s, 'utf8'),
                         default=os.getenv("REZ_BUILD_INSTALL_PATH"))
-    parser.add_argument("--install", "-i", type=bool,
-                        default=False)
+    parser.add_argument("--install", type=bool,
+                        default=bool(int(os.getenv("REZ_BUILD_INSTALL", "0"))))
     parser.add_argument("--symlink",
                         action="store_true")
 
