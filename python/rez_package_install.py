@@ -8,6 +8,7 @@ import os
 import os.path
 import shutil
 import platform
+
 logging.basicConfig(format="%(module)s - [%(levelname)s] - %(msg)s")
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -27,9 +28,14 @@ IGNORE = [
     "*.sln",
     ".vs",
     ".bez*",
+    "*.vscode",
+    "*.idea"
     "build.rxt",
-    ".gitignore"
+    ".gitignore",
+    ".gitlab-ci.yml",
+    ".pylintrc"
 ]
+
 
 def makelink(src, dest):
     if platform.platform().lower().startswith("windows"):
@@ -72,6 +78,8 @@ def copyBuild(source_path, destination_path, symlink=False):
                 makelink(os.path.normpath(src), dest)
             else:
                 shutil.copytree(src, dest)
+        elif os.path.isfile(src):
+            shutil.copyfile(src, dest)
 
 
 def build(source_path, build_path, install_path, targets, symlink=False):
@@ -82,7 +90,7 @@ def build(source_path, build_path, install_path, targets, symlink=False):
         copyBuild(source_path, install_path, symlink)
 
     _build()
-    print(targets)
+
     if "install" in (targets or []):
         _install()
 
