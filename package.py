@@ -14,7 +14,8 @@ tools = [
     "rez-package-install",
     "rez-package-install-cmake"
 ]
-build_command = "{root}/bin/rez-package-install --command build --source_path {root}"
+build_command = "{root}/bin/rez-package-install-cmake --command build --source_path {root}"
+private_build_requires = ["rezutils"]
 
 def commands():
     global env
