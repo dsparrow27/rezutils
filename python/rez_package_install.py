@@ -105,7 +105,7 @@ def main():
                         type=lambda s: unicode(s, 'utf8'),
                         default=os.getenv("REZ_BUILD_PATH"))
     parser.add_argument("--install_path",
-                        type=lambda s: unicode(s, 'utf8'),
+                        type=str,
                         default=os.getenv("REZ_BUILD_INSTALL_PATH"))
     parser.add_argument("--install", type=bool,
                         default=bool(int(os.getenv("REZ_BUILD_INSTALL", "0"))))
