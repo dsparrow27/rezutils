@@ -64,14 +64,13 @@ def main():
                         type=str,
                         default=os.getenv("REZ_BUILD_INSTALL_PATH"))
     parser.add_argument("--install", type=bool,
-                        default=bool(os.getenv("REZ_BUILD_INSTALL")))
+                        default=bool(int(os.getenv("REZ_BUILD_INSTALL"))))
     parser.add_argument("--bs", type=str,
                         default="Visual Studio 15 2017 Win64")
     opts = parser.parse_args()
 
     targets = ["install"] if opts.install else []
     logger.debug(str(opts))
-
     build(opts.source_path,
           opts.build_path,
           opts.install_path,

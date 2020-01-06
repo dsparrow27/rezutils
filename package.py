@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 name = "rezutils"
-version = "1.1.2"
+version = "1.1.4"
 authors = ["David Sparrow"]
 variants = [
-    ["platform-windows", "python-2.7"]
+    ["platform-windows"]
 ]
 requires = [
     "python",
     "cmake",
-    "rez"
+    "rez-2+"
 ]
 tools = [
     "rez-package-install",
@@ -16,6 +16,7 @@ tools = [
 ]
 build_command = "{root}/bin/rez-package-install-cmake --command build --source_path {root}"
 private_build_requires = ["rezutils"]
+
 
 def commands():
     global env
