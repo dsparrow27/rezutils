@@ -16,8 +16,8 @@ def run(cmd, cwdPath):
                          stderr=subprocess.STDOUT, cwd=cwdPath)
     while True:
         l = p.stdout.readline()
-        if l != "":
-            print(l)
+        if l:
+            print(str(l))
         elif p.poll() is not None:
             break
 
