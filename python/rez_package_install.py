@@ -33,6 +33,8 @@ IGNORE = [
     "build.rxt",
     ".gitignore",
     ".gitlab-ci.yml",
+    "*install_location.yml",
+    "*pipeline_configuration.yml",
     ".pylintrc"
 ]
 
@@ -72,12 +74,13 @@ def copyBuild(source_path, destination_path, symlink=False):
                 deleteLink(dest)
             else:
                 os.remove(dest)
+
         logger.debug("Copying path: {} -> {}".format(src, dest))
         if os.path.isdir(src):
             if symlink:
                 makelink(os.path.normpath(src), dest)
             else:
-                shutil.copytree(src, dest)
+                shutil.copytree(src, dest, ignore=shutil.ignore_patterns(*IGNORE))
         elif os.path.isfile(src):
             shutil.copyfile(src, dest)
 
@@ -102,7 +105,7 @@ def main():
     parser.add_argument("--command")
     parser.add_argument("--source_path", type=str)
     parser.add_argument("--build_path",
-                        type=lambda s: unicode(s, 'utf8'),
+                        type=str,
                         default=os.getenv("REZ_BUILD_PATH"))
     parser.add_argument("--install_path",
                         type=str,
