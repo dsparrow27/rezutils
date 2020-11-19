@@ -92,12 +92,12 @@ def main():
 
     parser = argparse.ArgumentParser("rezbuild")
     parser.add_argument("--command")
-    parser.add_argument("--source_path", type=lambda s: unicode(s, 'utf8'))
+    parser.add_argument("--source_path", type=str)
     parser.add_argument("--build_path",
-                        type=lambda s: unicode(s, 'utf8'),
+                        type=str,
                         default=os.getenv("REZ_BUILD_PATH"))
     parser.add_argument("--install_path",
-                        type=lambda s: unicode(s, 'utf8'),
+                        type=str,
                         default=os.getenv("REZ_BUILD_INSTALL_PATH"))
     parser.add_argument("--install", type=bool,
                         default=bool(int(os.getenv("REZ_BUILD_INSTALL", "0"))))
